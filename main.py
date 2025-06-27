@@ -3,7 +3,7 @@ import src.status as status
 from src.auth import verify_api_key
 from datetime import datetime
 from src.db import StatusModel
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field, StrictBool
 from typing import Annotated
 
@@ -60,3 +60,24 @@ async def get_device_status(device_id: str, auth: Annotated[str | None, Depends(
         "online": result.online,
     }
 
+@app.get("/status/{device_id}/history")
+async def get_device_status_history(device_id: str,
+                                    auth: Annotated[str | None, Depends(verify_api_key)],
+                                    skip: int = Query(0, ge=0),
+                                    limit: int = Query(100, ge=1, le=500)):
+    results = status.get_device_status_history(device_id, skip, limit)
+    data = [
+        {
+            "device_id": r.device_id,
+            "timestamp": r.timestamp,
+            "battery_level": r.battery_level,
+            "rssi": r.rssi,
+            "online": r.online,
+        }
+        for r in results
+    ]
+    return {
+        "skip": skip,
+        "limit": limit,
+        "data": data
+    }

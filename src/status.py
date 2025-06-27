@@ -18,6 +18,19 @@ def get_device_status(device_id: str):
             .first()
         )
 
+
+def get_device_status_history(device_id: str, skip: int = 0, limit: int = 100):
+    with Database().get() as db:
+        return (
+            db.query(StatusModel)
+            .filter(StatusModel.device_id == device_id)
+            .order_by(StatusModel.timestamp.desc())
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
+
 def get_summary():
     with Database().get() as db:
         # Create a subquery that ranks each row by timestamp per device

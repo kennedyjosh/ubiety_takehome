@@ -15,6 +15,9 @@ API:
      
 
  * `GET` the most recent status for a device with at `/status/{device_id}`
+ * `GET` the status history for a device with `/status/{device_id}/history`
+   * Supports pagination with query parameters `skip` and `limit`. Omitting these
+     parameters will use `skip=0` and `limit=100`. 
  * `GET` the most recent status for all devices at `/status/summary`
 
 Features:

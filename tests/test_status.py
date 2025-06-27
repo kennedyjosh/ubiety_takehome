@@ -2,7 +2,7 @@ import pytest
 
 from datetime import datetime, timedelta, timezone
 from db import Database, StatusModel
-from status import add_device_status, get_device_status, get_summary
+from status import add_device_status, get_device_status, get_device_status_history, get_summary
 
 
 @pytest.fixture(scope="function")
@@ -44,6 +44,34 @@ def test_get_device_status_returns_latest(setup_database):
 
     result = get_device_status("sensor-abc")
     assert result.battery_level == 90
+
+
+def test_status_history_pagination(setup_database):
+    device_id = "sensor-paginated"
+
+    # Insert 10 records spaced by 1 minute
+    for i in range(10):
+        add_device_status(make_status(device_id, minutes_ago=i, battery=50 + i))
+
+    # Test: get first 5
+    results = get_device_status_history(device_id, skip=0, limit=5)
+    assert len(results) == 5
+    assert results[0].battery_level == 50 + 0  # Newest
+    assert results[-1].battery_level == 50 + 4
+
+    # Test: get next 5
+    results = get_device_status_history(device_id, skip=5, limit=5)
+    assert len(results) == 5
+    assert results[0].battery_level == 50 + 5
+    assert results[-1].battery_level == 50 + 9  # Oldest
+
+    # Test: skip beyond end
+    results = get_device_status_history(device_id, skip=20, limit=5)
+    assert results == []
+
+    # Test: limit less than available
+    results = get_device_status_history(device_id, skip=0, limit=3)
+    assert len(results) == 3
 
 
 def test_get_summary_returns_latest_per_device(setup_database):

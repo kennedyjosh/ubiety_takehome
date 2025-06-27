@@ -41,6 +41,7 @@ class Database(metaclass=Singleton):
                 self.DATABASE_URL = fallback
 
         # Create engine and session
+        # check_same_thread is False for SQLite to handle multiple thread connections
         self.engine = create_engine(self.DATABASE_URL, connect_args={"check_same_thread": False})
         self.SessionLocal = sessionmaker(bind=self.engine)
 
