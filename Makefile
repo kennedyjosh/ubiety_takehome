@@ -26,7 +26,7 @@ clean:
 	rm -f *test.db
 	rm -rf .pytest_cache
 	rm -rf __pycache__
-	rm -r .coverage
+	rm -f .coverage
 
 clean-db:
 	rm -f *test.db
