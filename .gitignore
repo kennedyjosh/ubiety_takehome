@@ -1,0 +1,15 @@
+# IDE files
+.idea
+
+# Mac files
+.DS_Store
+
+# pycache files
+.pytest_cache
+*.pyc
+
+# Local SQL table
+iot.db
+
+# Emacs files
+*~
