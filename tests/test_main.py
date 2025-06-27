@@ -57,3 +57,6 @@ def test_post_status_invalid_types(field, invalid_value):
     response = client.post("/status", json=payload)
     assert response.status_code == 422
     assert field in response.text
+
+def test_fail():
+    assert False
