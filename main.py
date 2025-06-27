@@ -35,7 +35,6 @@ async def get_summary():
             "device_id": r.device_id,
             "timestamp": r.timestamp,
             "battery_level": r.battery_level,
-            "rssi": r.rssi,
             "online": r.online,
         }
         for r in results
