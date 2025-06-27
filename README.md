@@ -51,7 +51,7 @@ To test with a coverage report, do `make cover`.
 
 ## Other useful `make` commands
 
-`make clean` will remove virtual environment and testing artifacts.
+`make clean` will remove caches, the virtual environment, and any testing artifacts.
 
 `make clean-db` will remove the production database 
 (and any testing databases, but those are removed by `make clean` as well).
