@@ -8,8 +8,11 @@
 .pytest_cache
 *.pyc
 
-# Local SQL table
-iot.db
+# Databases
+*.db
 
 # Emacs files
 *~
+
+# Virtual environment files
+venv

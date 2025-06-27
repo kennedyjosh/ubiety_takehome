@@ -42,6 +42,7 @@ class Database(metaclass=Singleton):
 
         # Create engine and session
         self.engine = create_engine(self.DATABASE_URL, connect_args={"check_same_thread": False})
+        self.SessionLocal = sessionmaker(bind=self.engine)
 
         # Create tables
         self._create_tables(test=False)
@@ -57,7 +58,7 @@ class Database(metaclass=Singleton):
         ```
         """
 
-        db = sessionmaker(bind=self.engine)()
+        db = self.SessionLocal()
         try:
             yield db
         finally:
