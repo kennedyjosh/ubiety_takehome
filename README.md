@@ -89,4 +89,5 @@ and functionality should be very simple.
 
 ## CI/CD
 
-# TODO
+This project uses Github Actions as the CI pipeline; it will run tests
+and check that all the dependencies can be installed.
