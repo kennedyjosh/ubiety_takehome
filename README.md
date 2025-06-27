@@ -1,7 +1,7 @@
 # Simple IoT Device Status Service
 
 This project acts as a backend to accept IoT status updates via HTTP.
-Functionality:
+API:
  * `POST` a device status with to `/status`
    * The payload must have the following fields:
    
@@ -17,6 +17,9 @@ Functionality:
  * `GET` the most recent status for a device with at `/status/{device_id}`
  * `GET` the most recent status for all devices at `/status/summary`
 
+Features:
+* API key authorization (see [Configuration](#Configuration))
+
 ## Installing and running the server
 
 Python 3.12+ and a Unix-based machine is required to install this program.
@@ -29,6 +32,17 @@ This is equivalent to `make install` and then `make run`.
 
 Do `make test` to run the unit and integration tests.
 This command will also install any dependencies needed for testing.
+
+## Configuration
+
+Optionally, you can specify configurable variables. Create a file
+`config.ini` with any of the following options:
+* In the `general` section:
+  * `key` specifies the valid API key. An API key is only enforced if
+    one is listed here.
+* In the `database` section:
+  * `url` specifies the database file url. By default, it is 
+    `sqlite:///./iot_test.db`.
 
 ## Other useful `make` commands
 
@@ -67,3 +81,7 @@ example, the singleton functionality was abstracted out so that it can be easily
 used by modules other than the database. Likewise, a configuration file is used 
 to control other elements (like the database file name). Thus, adding more endpoints 
 and functionality should be very simple. 
+
+## CI/CD
+
+# TODO

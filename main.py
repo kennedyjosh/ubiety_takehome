@@ -1,11 +1,15 @@
 import src.status as status
 
+from src.auth import verify_api_key
 from datetime import datetime
 from src.db import StatusModel
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel, Field, StrictBool
+from typing import Annotated
+
 
 app = FastAPI()
+
 
 class StatusPayload(BaseModel):
     device_id: str
@@ -23,12 +27,14 @@ class StatusPayload(BaseModel):
             online=self.online
         )
 
+
 @app.post("/status", status_code=201)
-async def post_status(payload: StatusPayload):
+async def post_status(payload: StatusPayload, auth: Annotated[str | None, Depends(verify_api_key)]):
     status.add_device_status(payload.to_model())
 
+
 @app.get("/status/summary")
-async def get_summary():
+async def get_summary(auth: Annotated[str | None, Depends(verify_api_key)]):
     results = status.get_summary()
     return [
         {
@@ -40,8 +46,9 @@ async def get_summary():
         for r in results
     ]
 
+
 @app.get("/status/{device_id}")
-async def get_device_status(device_id: str):
+async def get_device_status(device_id: str, auth: Annotated[str | None, Depends(verify_api_key)]):
     result = status.get_device_status(device_id)
     if not result:
         raise HTTPException(status_code=404, detail="Device not found")
