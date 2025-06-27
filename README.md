@@ -28,11 +28,6 @@ Older versions of Python3 may work, but it is not guaranteed.
 Do `make` to install dependencies and start the server at `localhost:8000`.
 This is equivalent to `make install` and then `make run`.
 
-## Testing
-
-Do `make test` to run the unit and integration tests.
-This command will also install any dependencies needed for testing.
-
 ## Configuration
 
 Optionally, you can specify configurable variables. Create a file
@@ -43,6 +38,13 @@ Optionally, you can specify configurable variables. Create a file
 * In the `database` section:
   * `url` specifies the database file url. By default, it is 
     `sqlite:///./iot_test.db`.
+
+## Testing
+
+Do `make test` to run the unit and integration tests.
+This command will also install any dependencies needed for testing.
+
+To test with a coverage report, do `make cover`.
 
 ## Other useful `make` commands
 

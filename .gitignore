@@ -8,6 +8,10 @@
 .pytest_cache
 *.pyc
 
+# test artifacts
+.pytest_cache
+.coverage
+
 # Databases
 *.db
 
