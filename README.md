@@ -2,7 +2,18 @@
 
 This project acts as a backend to accept IoT status updates via HTTP.
 Functionality:
- * Add/update device status with a `POST` request to `/status`
+ * `POST` a device status with to `/status`
+   * The payload must have the following fields:
+   
+     | field          | data type | notes                     |
+     |----------------|-----------|---------------------------|
+     | device_id      | str       |                           |
+     | timestamp      | str       | must be valid datetime    |
+     | battery_level  | int       | must be in range [0, 100] |
+     | rssi           | int       | signal strength           |
+     | online         | bool      |                           |
+     
+
  * `GET` the most recent status for a device with at `/status/{device_id}`
  * `GET` the most recent status for all devices at `/status/summary`
 
