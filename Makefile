@@ -5,21 +5,21 @@ create-venv:
 	if [ ! -d "venv" ]; then python3 -m venv venv; fi
 
 install: create-venv
-	source ./venv/bin/activate && python3 -m pip install -r requirements.txt
+	. ./venv/bin/activate && python3 -m pip install -r requirements.txt
 
 install-test: create-venv
-	source ./venv/bin/activate && python3 -m pip install -r requirements.txt && python3 -m pip install -r test_requirements.txt
+	. ./venv/bin/activate && python3 -m pip install -r requirements.txt && python3 -m pip install -r test_requirements.txt
 
 run:
-	source ./venv/bin/activate && uvicorn main:app
+	. ./venv/bin/activate && uvicorn main:app
 
 test: install-test
 	-rm iot_test.db
-	source ./venv/bin/activate && python3 -m pytest
+	. ./venv/bin/activate && python3 -m pytest
 
 cover: install-test
 	-rm iot_test.db
-	source ./venv/bin/activate && python3 -m pytest --cov
+	. ./venv/bin/activate && python3 -m pytest --cov
 
 clean:
 	rm -rf ./venv
