@@ -29,12 +29,12 @@ class StatusPayload(BaseModel):
 
 
 @app.post("/status", status_code=201)
-async def post_status(payload: StatusPayload, auth: Annotated[str | None, Depends(verify_api_key)]):
+async def post_status(payload: StatusPayload, _auth: Annotated[str | None, Depends(verify_api_key)]):
     status.add_device_status(payload.to_model())
 
 
 @app.get("/status/summary")
-async def get_summary(auth: Annotated[str | None, Depends(verify_api_key)]):
+async def get_summary(_auth: Annotated[str | None, Depends(verify_api_key)]):
     results = status.get_summary()
     return [
         {
@@ -48,7 +48,7 @@ async def get_summary(auth: Annotated[str | None, Depends(verify_api_key)]):
 
 
 @app.get("/status/{device_id}")
-async def get_device_status(device_id: str, auth: Annotated[str | None, Depends(verify_api_key)]):
+async def get_device_status(device_id: str, _auth: Annotated[str | None, Depends(verify_api_key)]):
     result = status.get_device_status(device_id)
     if not result:
         raise HTTPException(status_code=404, detail="Device not found")
@@ -62,7 +62,7 @@ async def get_device_status(device_id: str, auth: Annotated[str | None, Depends(
 
 @app.get("/status/{device_id}/history")
 async def get_device_status_history(device_id: str,
-                                    auth: Annotated[str | None, Depends(verify_api_key)],
+                                    _auth: Annotated[str | None, Depends(verify_api_key)],
                                     skip: int = Query(0, ge=0),
                                     limit: int = Query(100, ge=1, le=500)):
     results = status.get_device_status_history(device_id, skip, limit)

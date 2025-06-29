@@ -1,5 +1,6 @@
 from util import *
 
+
 def test_singleton():
     class SingletonChild(metaclass=Singleton):
         pass
@@ -10,3 +11,7 @@ def test_singleton():
         pass
 
     assert NotSingleton() is not NotSingleton()
+
+
+def test_env():
+    assert is_test_env()

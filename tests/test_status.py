@@ -7,13 +7,12 @@ from status import add_device_status, get_device_status, get_device_status_histo
 
 @pytest.fixture(scope="function")
 def setup_database(monkeypatch):
-    # Create tables before test
-    Database()._create_tables()
-
+    # Create tables before test and drop them afterwards
+    db = Database()
+    db._create_tables()
     yield
-
     # Drop tables after test
-    Database()._drop_tables()
+    db._drop_tables()
 
 
 def make_status(device_id, minutes_ago=0, battery=50, rssi=-70, online=True):

@@ -1,10 +1,8 @@
-import os
-
 from configparser import ConfigParser
 from contextlib import contextmanager
 from sqlalchemy import Boolean, create_engine, Column, DateTime, Integer, String
 from sqlalchemy.orm import sessionmaker, declarative_base
-from src.util import Singleton
+from src.util import is_test_env, Singleton
 
 # Base class that models will inherit from to create DB tables
 Base = declarative_base()
@@ -25,7 +23,7 @@ class Database(metaclass=Singleton):
 
     def __init__(self):
         # Get database url
-        if "UBIETY_RUN_ENV" in os.environ and os.environ["UBIETY_RUN_ENV"] == "test":
+        if is_test_env():
             # Use a separate db for testing
             # If you change this name, update the Makefile
             self.DATABASE_URL = "sqlite:///./iot_test.db"
@@ -66,7 +64,7 @@ class Database(metaclass=Singleton):
             db.close()
 
     def _assert_test_env(self):
-        assert "UBIETY_RUN_ENV" in os.environ and os.environ["UBIETY_RUN_ENV"] == "test"
+        assert is_test_env()
 
     def _create_tables(self, test=True):
         if test: self._assert_test_env()

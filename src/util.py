@@ -1,3 +1,4 @@
+import os
 from threading import Lock
 
 class Singleton(type):
@@ -10,3 +11,8 @@ class Singleton(type):
                 if cls not in cls._instances:
                     cls._instances[cls] = super().__call__(*args, **kwargs)
         return cls._instances[cls]
+
+
+def is_test_env():
+    """Returns true if env var is set to testing mode, false otherwise"""
+    return "UBIETY_RUN_ENV" in os.environ and os.environ["UBIETY_RUN_ENV"] == "test"

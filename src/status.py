@@ -8,6 +8,7 @@ def add_device_status(status_model: StatusModel):
         db.add(status_model)
         db.commit()
 
+
 def get_device_status(device_id: str):
     # Query for the most recent status by timestamp
     with Database().get() as db:

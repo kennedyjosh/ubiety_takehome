@@ -3,8 +3,9 @@ import pytest
 from fastapi.testclient import TestClient
 
 import auth
-from main import app
+from src.main import app
 from src.auth import ApiKey
+from src.db import Database
 
 
 API_KEY = "test-key"
@@ -12,13 +13,25 @@ client = TestClient(app)
 
 
 @pytest.fixture(scope="function")
-def setup_api_key(monkeypatch):
+def setup_env_and_db(monkeypatch):
+    # Auth is not checked when env var is set to test - remove it just for these tests
+    # As a side effect, this affects the DB, so manually create and then cleanup (drop) the tables
+    db = Database()
+    db._create_tables()
+    monkeypatch.delenv("UBIETY_RUN_ENV")
+    yield
+    monkeypatch.setenv("UBIETY_RUN_ENV", "test")
+    db._drop_tables()
+
+
+@pytest.fixture(scope="function")
+def setup_api_key(monkeypatch, setup_env_and_db):
     monkeypatch.setattr(ApiKey, "get", lambda _: API_KEY)
 
 
 @pytest.fixture(scope="function")
 def setup_no_api_key(monkeypatch):
-    monkeypatch.setattr("src.auth.ApiKey.get", lambda _: None)
+    monkeypatch.setattr(ApiKey, "get", lambda _: None)
 
 
 def make_payload():
