@@ -1,8 +1,8 @@
 # Simple IoT Device Status Service
 
 This project acts as a backend to accept IoT status updates via HTTP.
-API:
- * `POST` a device status with to `/status`
+
+ * `POST` a device status to `/status`
    * The payload must have the following fields:
    
      | field          | data type | notes                     |
@@ -15,13 +15,13 @@ API:
      
 
  * `GET` the most recent status for a device with at `/status/{device_id}`
- * `GET` the status history for a device with `/status/{device_id}/history`
+ * `GET` the all historical status updates for a device with `/status/{device_id}/history`
    * Supports pagination with query parameters `skip` and `limit`. Omitting these
      parameters will use `skip=0` and `limit=100`. 
  * `GET` the most recent status for all devices at `/status/summary`
 
 Features:
-* API key authorization (see [Configuration](#Configuration))
+* Optional API key authorization (see [Configuration](#Configuration))
 
 ## Installing and running the server
 
@@ -81,11 +81,11 @@ during testing is separate from the production database.
 
 #### Code extensibility
 
-A reasonable amount of time was spent making the code easily extensible. For 
+The code was designed to be easily extensible. For 
 example, the singleton functionality was abstracted out so that it can be easily 
 used by modules other than the database. Likewise, a configuration file is used 
 to control other elements (like the database file name). Thus, adding more endpoints 
-and functionality should be very simple. 
+and functionality is very simple. 
 
 ## CI/CD
 
